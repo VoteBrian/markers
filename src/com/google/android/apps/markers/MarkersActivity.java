@@ -226,11 +226,11 @@ public class MarkersActivity extends Activity
         }
         final ViewGroup root = ((ViewGroup)findViewById(R.id.root));
         root.addView(mSlate, 0);
-        
-        mMediaScannerConnection =
-                new MediaScannerConnection(MarkersActivity.this, mMediaScannerClient); 
 
-        
+        mMediaScannerConnection =
+                new MediaScannerConnection(MarkersActivity.this, mMediaScannerClient);
+
+
         if (icicle != null) {
             onRestoreInstanceState(icicle);
         }
@@ -403,13 +403,24 @@ public class MarkersActivity extends Activity
     @Override
     public void onResume() {
         super.onResume();
-        
+
         String orientation = getString(R.string.orientation);
-        
+
         setRequestedOrientation(
                 "landscape".equals(orientation)
                     ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                     : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+        // set Immersive Mode
+        View decorView = getWindow().getDecorView();
+        int uiOptions = decorView.getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+
+        newUiOptions |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(newUiOptions);
     }
 
     @Override
